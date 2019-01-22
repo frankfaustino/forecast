@@ -1,7 +1,7 @@
 {
-  "name": "client",
+  "name": "@forecasten/client",
   "version": "1.0.0",
-  "description": "nextjs and react frontend for forecasten web  application",
+  "description": "nextjs and react frontend for forecasten web application",
   "main": "index.js",
   "scripts": {
     "dev": "next",
