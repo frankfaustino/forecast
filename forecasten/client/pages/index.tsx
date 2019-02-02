@@ -1,7 +1,12 @@
+import { Grommet } from 'grommet'
+import React from 'react'
+
+import ButtonLogin from '../elements/LoginButton'
+
 const Index = () => (
-  <div>
-    <p>Hello, my name is Forecasten!</p>
-  </div>
+  <Grommet>
+    <ButtonLogin />
+  </Grommet>
 )
 
 export default Index
