@@ -3,13 +3,16 @@
   "compilerOptions": {
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "jsx": "preserve",
+    "jsx": "react",
     "lib": ["dom", "es2017"],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
     "preserveConstEnums": true,
     "skipLibCheck": true,
-    "target": "esnext"
+    "target": "esnext",
+    "outDir": "dist",
   },
+  "include": ["**/*.tsx"],
+  "exclude": ["node_modules", ".next", "next.config.js"]
 }

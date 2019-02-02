@@ -8,7 +8,8 @@
     "no-console": false,
     "curly": false,
     "semicolon": [true, "never"],
-    "quotemark": [true, "single", "jsx-double"]
+    "quotemark": [true, "single", "jsx-double"],
+    "interface-name": false
   },
   "linterOptions": {
     "exclude": [
