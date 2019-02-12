@@ -39,7 +39,7 @@ export const main = (async () => {
   app.use(sesh)
 
   const requestAPIToken = async (req: any, res: any) => {
-    const url = `${CLOVER_URI}/token?client_id=${APP_ID}&client_secret=${APP_SECRET}&code=${
+    const url = `${CLOVER_URI}/oauth/token?client_id=${APP_ID}&client_secret=${APP_SECRET}&code=${
       req.query.code
     }`
     await axios
@@ -57,7 +57,7 @@ export const main = (async () => {
   }
 
   const authenticate = async (req: any, res: any) => {
-    const url = `${CLOVER_URI}/authorize?client_id=${APP_ID}`
+    const url = `${CLOVER_URI}/oauth/authorize?client_id=${APP_ID}`
     req.query.code ? await requestAPIToken(req, res) : await res.redirect(url)
   }
 
