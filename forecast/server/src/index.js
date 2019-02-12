@@ -1,16 +1,12 @@
-import { ApolloServer } from 'apollo-server-express'
-import axios from 'axios'
-import * as connectRedis from 'connect-redis'
-import { config } from 'dotenv'
-import * as express from 'express'
-import * as session from 'express-session'
-import * as Redis from 'ioredis'
-import 'reflect-metadata'
-import { buildSchema } from 'type-graphql'
+const { ApolloServer } = require('apollo-server-express')
+const axios = require('axios')
+const connectRedis = require('connect-redis')
+const { config } = require('dotenv')
+const express = require('express')
+const session = require('express-session')
+const Redis = require('ioredis')
 
-import { MerchantResolver } from './modules/user/MerchantResolver'
-
-export const main = (async () => {
+const main = (async () => {
   config()
   const { CLIENT_URI, PORT, PROD_APP_ID, PROD_APP_SECRET, PROD_CLOVER_URI } = process.env
   // const { APP_ID, APP_SECRET, CLIENT_URI, CLOVER_URI, PORT, PROD_APP_ID, PROD_APP_SECRET, PROD_CLOVER_URI } = process.env
@@ -27,27 +23,27 @@ export const main = (async () => {
     resave: false,
     saveUninitialized: false,
     secret: 'supersecret',
-    store: new RedisStore({ client: redis as any })
+    store: new RedisStore({ client: redis })
   })
 
   const app = express()
-  const server = new ApolloServer({
-    schema: await buildSchema({
-      resolvers: [MerchantResolver]
-    })
-  })
+  // const server = new ApolloServer({
+  //   schema: await buildSchema({
+  //     resolvers: [MerchantResolver]
+  //   })
+  // })
 
   app.use(sesh)
 
-  const requestAPIToken = async (req: any, res: any) => {
+  const requestAPIToken = async (req, res) => {
     const url = `${PROD_CLOVER_URI}/oauth/token?client_id=${PROD_APP_ID}&client_secret=${PROD_APP_SECRET}&code=${
       req.query.code
     }`
-    // const url = `${CLOVER_URI}/oauth/token?client_id=${APP_ID}&client_secret=${APP_SECRET}&code=${
-    //   req.query.code
-    // }`
-    // Save response from Clover OAuth to session
-    Object.assign(req.session, req.query)
+
+    if (req.session && req.query) {
+      // Save response from Clover OAuth to session
+      Object.assign(req.session, req.query)
+    }
 
     await axios
       .get(url)
@@ -64,7 +60,7 @@ export const main = (async () => {
       })
   }
 
-  const authenticate = async (req: any, res: any) => {
+  const authenticate = async (req, res) => {
     const url = `${PROD_CLOVER_URI}/oauth/authorize?client_id=${PROD_APP_ID}`
     req.query.code ? await requestAPIToken(req, res) : await res.redirect(url)
   }
@@ -72,9 +68,9 @@ export const main = (async () => {
   app.get('/auth', (req, res) => authenticate(req, res))
 
   app.get('/inventory', async (req, res) => {
-    const { access_token, merchant_id } = req.session as any
+    const { access_token, merchant_id } = req.session
     const url = `${PROD_CLOVER_URI}/v3/merchants/${merchant_id}/items?access_token=${access_token}`
-    const response: any = await axios.get(url).catch((err: any) => console.log('🐛', err.message))
+    const response = await axios.get(url).catch(err => console.log('🐛', err.message))
     if (response && response.data) {
       res.json(response.data)
     }
@@ -85,7 +81,9 @@ export const main = (async () => {
     origin: '*'
   }
 
-  server.applyMiddleware({ app, cors })
+  // server.applyMiddleware({ app, cors })
 
   app.listen(PORT, () => console.log(`🤖 Server is listening on port ${PORT}`))
 })()
+
+module.exports = main

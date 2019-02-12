@@ -1,48 +1,36 @@
 import { ApolloClient } from 'apollo-boost'
-import { AppProps, default as NextApp, DefaultAppIProps } from 'next/app'
+import { AppProps, default as NextApp } from 'next/app'
 import Head from 'next/head'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { getDataFromTree } from 'react-apollo'
 
-import {
-  ApolloContext,
-  InitApolloClient,
-  WithApolloOptions,
-  WithApolloProps,
-  WithApolloState
-} from '../types'
 import initApollo from './init-apollo'
 
 const SSR = !process.browser
 
-const getDisplayName = (Component: React.ComponentType<any>) =>
+const getDisplayName = (Component) =>
   Component.displayName || Component.name || 'Unknown'
 
-export default function withApollo<TCache = any>(
-  client: InitApolloClient<TCache>,
-  options: WithApolloOptions = {}
-) {
-  type ApolloProps = WithApolloProps<TCache>
-
+export default function withApollo(client, options = {}) {
   if (!options.getDataFromTree) {
     options.getDataFromTree = 'always'
   }
 
-  return (App: typeof NextApp) =>
-    class WithApollo extends React.Component<ApolloProps & AppProps & DefaultAppIProps> {
-      public static displayName = `WithApollo(${getDisplayName(App)})`
+  return (App) =>
+    class WithApollo extends React.Component {
+      static displayName = `WithApollo(${getDisplayName(App)})`
 
-      public static propTypes = {
+      static propTypes = {
         apollo: PropTypes.object,
         apolloState: PropTypes.object
       }
 
-      public static getInitialProps = async (appCtx: ApolloContext) => {
+      static getInitialProps = async (appCtx) => {
         const { Component, router, ctx } = appCtx
         const headers = ctx.req ? ctx.req.headers : {}
-        const apollo = initApollo<TCache>(client, { ctx, headers })
-        const apolloState: WithApolloState<TCache> = {}
+        const apollo = initApollo(client, { ctx, headers })
+        const apolloState = {}
         const getInitialProps = App.getInitialProps
 
         let appProps = { pageProps: {} }
@@ -85,17 +73,17 @@ export default function withApollo<TCache = any>(
         return { ...appProps, apolloState }
       }
 
-      public apollo: ApolloClient<TCache>
+      apollo
 
-      constructor(props: ApolloProps & AppProps & DefaultAppIProps) {
+      constructor(props) {
         super(props)
 
-        this.apollo = initApollo<TCache>(client, {
+        this.apollo = initApollo(client, {
           initialState: props.apolloState.data
         })
       }
 
-      public render() {
+      render() {
         return <App {...this.props} apollo={this.apollo} />
       }
     }

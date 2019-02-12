@@ -3,9 +3,8 @@ import React from 'react'
 import { ApolloProvider } from 'react-apollo'
 
 import withApollo from '../lib/graphql/with-apollo-client'
-import { WithApolloProps } from '../lib/types'
 
-class Root extends App<WithApolloProps<{}>, {}> {
+class Root extends App {
   render() {
     const { Component, pageProps, apollo } = this.props
 
