@@ -1,17 +1,19 @@
-import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-boost'
-
-import withApollo from './with-apollo'
+import ApolloClient from 'apollo-boost'
+import withApollo from 'next-with-apollo'
 
 const GRAPHQL_URL = 'http://localhost:8888/graphql'
 
 export default withApollo(
-  ({ initialState }) =>
+  ({ headers }) =>
     new ApolloClient({
-      cache: new InMemoryCache().restore(initialState || {}),
-      connectToDevTools: process.browser,
-      link: new HttpLink({
-        credentials: 'same-origin',
-        uri: GRAPHQL_URL
-      })
+      uri: GRAPHQL_URL,
+      request: async operation => {
+        operation.setContext({
+          fetchOptions: {
+            credentials: 'include'
+          },
+          headers
+        })
+      }
     })
 )
