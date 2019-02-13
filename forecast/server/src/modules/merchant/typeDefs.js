@@ -7,23 +7,8 @@ const typeDefs = gql`
     accessToken: String
   }
 
-  type Item {
-    id: String
-    name: String
-    sku: String
-    modifiedTime: Float
-    price: Int
-    cost: Int
-  }
-
-  type InventoryResponse {
-    elements: [Item]
-    href: String
-  }
-
   type Query {
     merchant: Merchant
-    inventory: InventoryResponse
   }
 `
 

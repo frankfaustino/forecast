@@ -3,16 +3,15 @@ require('dotenv').config()
 const express = require('express')
 
 const { authenticate, sesh } = require('./middleware')
-const { resolvers, typeDefs } = require('./modules/merchant')
+const schema = require('./modules')
 
 const main = (async () => {
-  const { CLIENT_URI, PORT, APP_ID, APP_SECRET, CLOVER_URI, NODE_ENV } = process.env
+  const { CLIENT_URI, NODE_ENV, PORT } = process.env
 
   const app = express()
 
   const server = new ApolloServer({
-    typeDefs,
-    resolvers,
+    schema,
     context: ({ req }) => ({ req })
   })
 
@@ -28,10 +27,11 @@ const main = (async () => {
   server.applyMiddleware({ app, cors })
 
   app.listen(PORT, () =>
-    console.log(`
-      🌍 ${NODE_ENV}\n
-      🤖 GraphQL server is running on http://localhost:${PORT}${server.graphqlPath}
-    `)
+    console.log(
+      `🌍 ${NODE_ENV}\n🤖 GraphQL server is running on http://localhost:${PORT}${
+        server.graphqlPath
+      }`
+    )
   )
 })()
 
