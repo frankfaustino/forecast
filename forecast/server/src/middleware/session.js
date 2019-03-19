@@ -4,6 +4,13 @@ const Redis = require('ioredis')
 
 const RedisStore = connectRedis(session)
 const redis = new Redis()
+const store = new RedisStore({ client: redis })
+
+redis.on('connect', () => console.log('🔮 redis-server is connected'))
+redis.on('error', () => {
+  console.log('❌ Please start redis-server')
+  redis.quit()
+})
 
 const sesh = session({
   cookie: {
@@ -15,7 +22,7 @@ const sesh = session({
   resave: false,
   saveUninitialized: false,
   secret: process.env.SESSION_SECRET,
-  store: new RedisStore({ client: redis })
+  store
 })
 
 module.exports = sesh

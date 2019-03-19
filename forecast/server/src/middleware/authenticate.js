@@ -23,13 +23,13 @@ const requestAPIToken = async (req, res) => {
     const { data } = await axios.get(url)
 
     if (data) {
-      req.session.access_token = data.access_token
-      req.session.save()
       console.log('🥳', data)
       console.log('🥳', req.query)
       console.log('🥳', req.session)
       console.log('🥳', req.sessionID)
       console.log('🥳', req.headers)
+      req.session.access_token = data.access_token
+      req.session.save()
 
       res.redirect(`${CLIENT_URI}/auth_success`)
     }
