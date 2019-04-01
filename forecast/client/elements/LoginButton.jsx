@@ -9,6 +9,6 @@ const openLoginWindow = () => {
   window.open(url, name, specs)
 }
 
-const LoginButton = () => <Button icon={<Login />} label="Log in to Clover" onClick={openLoginWindow} />
+const LoginButton = () => <Button alignSelf="center" icon={<Login />} label="Log in to Clover" onClick={openLoginWindow} />
 
 export default LoginButton
