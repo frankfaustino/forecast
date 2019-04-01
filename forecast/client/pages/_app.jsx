@@ -3,6 +3,7 @@ import React from 'react'
 import { ApolloProvider } from 'react-apollo'
 
 import withApollo from '../lib/graphql/with-apollo-client'
+import '../lib/css/main.css'
 
 class Root extends App {
   render() {
