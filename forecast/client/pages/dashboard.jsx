@@ -1,6 +1,7 @@
 import React from 'react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
+import Link from 'next/link'
 
 const QUERY = gql`
   query {
@@ -8,6 +9,12 @@ const QUERY = gql`
       id
       authCode
       accessToken
+      devices {
+        href
+        id
+        model
+        serial
+      }
     }
   }
 `
@@ -17,8 +24,26 @@ const Dashboard = () => (
     {({ loading, error, data }) => {
       if (loading) return 'Loading'
       if (error) return `Error! ${error.message}`
+      console.log(data)
+      const { accessToken, authCode, devices, id } = data.merchant
 
-      return <div>Dashboard</div>
+      return (
+        <>
+          <div>
+            <p>{id}</p>
+            <p>{accessToken}</p>
+            <p>{authCode}</p>
+            {devices && devices.map(({ href, id, model, serial }) => (
+              <div style={{ border: "1px solid green" }}>
+                <p>{href}</p>
+                <p>{id}</p>
+                <p>{model}</p>
+                <p>{serial}</p>
+              </div>))}
+          </div>
+          <Link href="/inventory">Inventory</Link>
+        </>
+      )
     }}
   </Query>
 )
