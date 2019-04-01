@@ -4,3 +4,4 @@ dist
 .env
 .next
 dump.rdb
+\.DS_Store
