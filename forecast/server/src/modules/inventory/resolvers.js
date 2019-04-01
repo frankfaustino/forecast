@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-const baseUrl = `${process.env.CLOVER_URI}/v3/merchants`
+const baseUrl = `${process.env.SANDBOX_CLOVER_URI}/v3/merchants`
 
 const inventory = async (parent, args, { req: { session } }, info) => {
   const { access_token, merchant_id } = session

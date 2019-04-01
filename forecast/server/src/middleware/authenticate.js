@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-const { APP_ID, APP_SECRET, CLIENT_URI, CLOVER_URI } = process.env
+const { SANDBOX_APP_ID, SANDBOX_APP_SECRET, CLIENT_URI, SANDBOX_CLOVER_URI } = process.env
 
 /**
  * Sends authorization code, along with client ID and client secret
@@ -11,7 +11,7 @@ const { APP_ID, APP_SECRET, CLIENT_URI, CLOVER_URI } = process.env
  */
 const requestAPIToken = async (req, res) => {
   try {
-    const url = `${CLOVER_URI}/oauth/token?client_id=${APP_ID}&client_secret=${APP_SECRET}&code=${
+    const url = `${SANDBOX_CLOVER_URI}/oauth/token?client_id=${SANDBOX_APP_ID}&client_secret=${SANDBOX_APP_SECRET}&code=${
       req.query.code
     }`
 
@@ -48,7 +48,7 @@ const requestAPIToken = async (req, res) => {
  * @returns {void}
  */
 const authenticate = async (req, res) => {
-  const url = `${CLOVER_URI}/oauth/authorize?client_id=${APP_ID}`
+  const url = `${SANDBOX_CLOVER_URI}/oauth/authorize?client_id=${SANDBOX_APP_ID}`
   req.query.code ? await requestAPIToken(req, res) : await res.redirect(url)
 }
 
