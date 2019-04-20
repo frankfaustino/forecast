@@ -1,10 +1,6 @@
 const { gql } = require('apollo-server-express')
 
 const typeDefs = gql`
-  type Order {
-    id: String
-  }
-
   type Tender {
     href: String
     id: String
