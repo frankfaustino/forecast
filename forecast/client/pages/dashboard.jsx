@@ -30,9 +30,9 @@ const Dashboard = () => (
       return (
         <>
           <div>
-            <p>{id}</p>
-            <p>{accessToken}</p>
-            <p>{authCode}</p>
+            <p>Merchant ID: {id}</p>
+            <p>Access Token: {accessToken}</p>
+            <p>Auth Code: {authCode}</p>
             {devices && devices.map(({ href, id, model, serial }) => (
               <div style={{ border: "1px solid green" }}>
                 <p>{href}</p>
