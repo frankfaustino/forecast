@@ -41,7 +41,14 @@ const Dashboard = () => (
                 <p>{serial}</p>
               </div>))}
           </div>
-          <Link href="/inventory">Inventory</Link>
+          <div>
+            <div>
+              <Link href="/inventory">Inventory</Link>
+            </div>
+            <div>
+              <Link href="/order">Order</Link>
+            </div>
+          </div>
         </>
       )
     }}
