@@ -1,6 +1,21 @@
 const { gql } = require('apollo-server-express')
 
 const typeDefs = gql`
+  type IdObject {
+    id: String
+  }
+
+  type LineItem {
+    orderRef: IdObject
+    item: IdObject
+    name: String
+    price: Int
+  }
+
+  type LineItems {
+    elements: [LineItem]
+  }
+
   type Order {
     id: String
     currency: String
@@ -10,10 +25,17 @@ const typeDefs = gql`
     manualTransaction: Boolean
     groupLineItems: Boolean
     testMode: Boolean
+    state: String
+    total: Int
+    lineItems: LineItems
+  }
+
+  type OrderResponse {
+    elements: [Order]
   }
 
   extend type Query {
-    order: Order
+    order: OrderResponse
   }
 `
 
